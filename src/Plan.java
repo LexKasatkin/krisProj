@@ -1,10 +1,7 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Plan  extends Reserve implements Comparable{//Класс для описания плана выпуска продукции
     private Date date;//дата запланированного выпуска

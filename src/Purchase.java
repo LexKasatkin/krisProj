@@ -40,4 +40,8 @@ public class Purchase extends Reserve{//Класс для описания по�
             e.printStackTrace();
         }
     }
+
+    public boolean equalsNameAndQuarter(Purchase purchase){
+        return this.getDetail().equals(purchase.getDetail())&&this.getQuarter().equals(purchase.getQuarter());
+    }
 }
