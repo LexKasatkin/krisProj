@@ -113,19 +113,10 @@ public class ListItems{
     }
 
     public void deleteEqualsItems() {
-        for(int i=0;i<this.reserveList.size();i++){
-            Purchase purchase1=(Purchase)reserveList.get(i);
-            for(int j=0;j<this.reserveList.size();j++){
-                Purchase purchase2=(Purchase)reserveList.get(j);
-                if(purchase1.equalsNameAndQuarter(purchase2)&&i!=j){
-                    try{
-                        this.reserveList.get(i).setAmount(this.reserveList.get(j).getAmount());
-                    }catch (Exception ex){
-                    }
-                    this.reserveList.remove(j);
-
-
-
+        for(Reserve purchase1:reserveList){
+            for (Reserve purchase2:reserveList){
+                if(((Purchase)purchase1).equalsNameAndQuarter((Purchase) purchase2)){
+                    
                 }
             }
         }
