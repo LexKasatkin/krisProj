@@ -17,7 +17,7 @@ public class Main{
         ListItems listItemsPurchase=new ListItems();
         listItemsPurchase=listItemsReserve.setPurchase(listItemsPlan);
         if(listItemsPurchase.reserveList.size()!=0){
-            //            listItemsPurchase.deleteEqualsItems();
+                        listItemsPurchase.deleteEqualsItems();
             listItemsPurchase.writeInFile("/home/lex/IdeaProjects/krisProj/src/out.txt");
         }
 

@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -112,14 +113,21 @@ public class ListItems{
         }
     }
 
-    public void deleteEqualsItems() {
-        for(Reserve purchase1:reserveList){
-            for (Reserve purchase2:reserveList){
-                if(((Purchase)purchase1).equalsNameAndQuarter((Purchase) purchase2)){
-                    
+    public void deleteEqualsItems() {//удаление одинаковых элементов
+        for(int i=0;i<this.reserveList.size();i++){
+            Purchase purchase1=(Purchase) reserveList.get(i);
+            for (int j=0;j<this.reserveList.size();j++){
+                Purchase purchase2=(Purchase)reserveList.get(j);
+                if(purchase1.equalsNameAndQuarter(purchase2)&&purchase1.getAmount()!=0&&purchase2.getAmount()!=0&&i!=j){
+                    purchase1.setAmount(purchase1.getAmount()+purchase2.getAmount());
+                    purchase2.setAmount(0);
                 }
             }
         }
+//        for (Iterator iterator=reserveList.iterator();iterator.hasNext();iterator.next()) {
+//            if (((Purchase)iterator).getAmount()==0)
+//                iterator.remove();
+//        }
     }
 
 }

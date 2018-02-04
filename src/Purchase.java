@@ -1,8 +1,9 @@
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.Scanner;
 
-public class Purchase extends Reserve{//Класс для описания поквартального выпуска продукции
+public class Purchase extends Reserve  {//Класс для описания поквартального выпуска продукции
     private String quarter;
 
     public String getQuarter() {
