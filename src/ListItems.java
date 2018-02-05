@@ -6,27 +6,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-public class ListItems{
+public class ListItems{  //объект для хранения объектов резерва, плана, вывода
     boolean equalItem = false;
-    List<Reserve> reserveList;
+    List<Reserve> reserveList;//список объектов
 
     ListItems() {
         reserveList = new ArrayList<Reserve>();
-    }
+    }//конструктор для создания списка
 
-    public void getData(String filename, Class cl) {
+    public void getData(String filename, Class cl) {//метод для получения данных из файла указанного в аргументах
         try {
-            File file = new File(filename);
+            File file = new File(filename);//
 
-            Scanner input = new Scanner(file);
+            Scanner input = new Scanner(file);//создание сканера по файлу
 
 
-            while (input.hasNextLine()) {
-                if (cl == Purchase.class) {
-                    Purchase purchase = new Purchase();
-                    purchase.getData(input);
-                    reserveList.add(purchase);
-                } else if (cl == Plan.class) {
+            while (input.hasNextLine()) {//цикл для обхода всех строк файла
+                if (cl == Purchase.class) { //если в метод передали класс для вывода плана закупок
+                    Purchase purchase = new Purchase();//создаем объект вывода плана закупок
+                    purchase.getData(input);//заполняем данными из файла
+                    reserveList.add(purchase);//добавляем в список
+                } else if (cl == Plan.class) {//если в метод передали класс - план реализаци
                     Plan plan = new Plan();
                     plan.getData(input);
                     reserveList.add(plan);
@@ -91,22 +91,11 @@ public class ListItems{
     }
 
 
-    public void equalsPurchases() {//метод для выявления деталей с одинаковым именем и кварталом
-
-    }
-
 
     public void writeInFile(String filename) {
         try (FileWriter writer = new FileWriter(filename, false)) {
-            // запись всей строки
-//            String text = "Мама мыла раму, раму мыла мама";
-//            writer.write(text);
-//            // запись по символам
-//            writer.append('\n');
-//            writer.append('E');
-//
-//            writer.flush();
-            for (Reserve reserve : this.reserveList) reserve.writeFile(writer);
+            for (Reserve reserve : this.reserveList)
+                if(reserve.getAmount()!=0)reserve.writeFile(writer);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -124,10 +113,6 @@ public class ListItems{
                 }
             }
         }
-//        for (Iterator iterator=reserveList.iterator();iterator.hasNext();iterator.next()) {
-//            if (((Purchase)iterator).getAmount()==0)
-//                iterator.remove();
-//        }
     }
 
 }
