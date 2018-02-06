@@ -10,28 +10,28 @@ public class Plan  extends Reserve implements Comparable{//Класс для о�
         return date;
     }
 
-    public void setDate(String date) {
-        DateFormat format = new SimpleDateFormat("yyyy.MM.dd", Locale.ENGLISH);
+    public void setDate(String date) {//устанавливаем дату в поле объекта класса из строки
+        DateFormat format = new SimpleDateFormat("yyyy.MM.dd", Locale.ENGLISH);//формат записи (чтения)
         try {
-            this.date = format.parse(date);
+            this.date = format.parse(date);//парсим строку и записываем в объект
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    Plan(){
+    Plan(){//конструктор
         this.date=new Date();
     }
     @Override
-    void getData(Scanner scanner) {
-        super.getData(scanner);
+    void getData(Scanner scanner) {//берем данные из файла и записываем в поле объекта класса
+        super.getData(scanner);//записываем название и количество деталей, обращаясь к методу родительского класса
         if(scanner.hasNext()) {
-            this.setDate(scanner.next());
+            this.setDate(scanner.next());//записываем дату
         }
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {//сравнение деталей по названию происходит с помощью обращения к такому же методу родительского класса
         return super.equals(obj);
     }
 
@@ -58,7 +58,7 @@ public class Plan  extends Reserve implements Comparable{//Класс для о�
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(Object o) {//метод для сортировки списка планируемого выпуска деталей по полю дата
         return this.date.compareTo(((Plan)o).getDate());
     }
 }

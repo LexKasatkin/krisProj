@@ -30,11 +30,11 @@ public class ListItems{  //объект для хранения объектов
                     Plan plan = new Plan();
                     plan.getData(input);
                     reserveList.add(plan);
-                } else if (cl == Reserve.class) {
+                } else if (cl == Reserve.class) {//если в метод передали класс - резерва
                     Reserve reserve = new Reserve();
-                    reserve.getData(input);
-                    equalItem = false;
-                    for (int i = 0; i < reserveList.size(); i++) {
+                    reserve.getData(input);//заполняем данными из файла
+                    equalItem = false;//находим все одинаковые детали(с одинаковыми именами) и объединяем в один объект
+                    for (int i = 0; i < reserveList.size(); i++) {//так как детали в файле могут повторяться
                         if (reserve.equals(reserveList.get(i))) {
                             reserveList.get(i).setAmount(reserveList.get(i).getAmount() + reserve.getAmount());
                             equalItem = true;
@@ -44,40 +44,41 @@ public class ListItems{  //объект для хранения объектов
                         reserveList.add(reserve);
                     }
                 }
-                input.nextLine();
+                input.nextLine();//следующая строка
 
             }
-            input.close();
+            input.close();//закрываем сканнер
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public ListItems setPurchase(ListItems listItemsPlan) {
-        ListItems listItemsPurchase = new ListItems();
-        for (int i = 0; i < this.reserveList.size(); i++) {
-            Reserve reserve = reserveList.get(i);
-            for (int j = 0; j < listItemsPlan.reserveList.size(); j++) {
-                Plan plan = (Plan) listItemsPlan.reserveList.get(j);
-                Purchase purchase = new Purchase();
-                purchase.setQuarter(plan.getStringWithQuarter());
-                purchase.setDetail(plan.getDetail());
-                if (plan.equals(reserve)) {
-                    if (plan.getAmount() <= reserve.getAmount()) {
-                        purchase.setAmount(0);
-                        reserveList.get(i).setAmount(reserve.getAmount() - plan.getAmount());
-                    } else {
-                        purchase.setAmount(plan.getAmount() - reserve.getAmount());
-                        purchase.setAmount((int) (purchase.getAmount() + (Math.ceil(purchase.getAmount() * 0.1))));
+    public ListItems setPurchase(ListItems listItemsPlan) {//метод для создания объектов  закупок конкретных деталей
+        ListItems listItemsPurchase = new ListItems();// создание объекта списка закупок
+        for (int i = 0; i < this.reserveList.size(); i++) {//перебираем все элементы в списке резервных деталей
+            Reserve reserve = reserveList.get(i); //берем i-ый объект из списка и присваиваем ему имя reserve
+            for (int j = 0; j < listItemsPlan.reserveList.size(); j++) {//перебираем все элементы из списка планируемого выпуска продукции
+                Plan plan = (Plan) listItemsPlan.reserveList.get(j);//берем j-й элемент из списка планируемого выпуска деталей
+                Purchase purchase = new Purchase();//создаем объект планируемой закупки детали
+                purchase.setQuarter(plan.getStringWithQuarter());//вычисляем квартал закупки детали с помощью метода getStringWithQuarter
+                purchase.setDetail(plan.getDetail());//присваиваем имя объекта плановой закупки такое же как у объекта планового выпуска
+                if (plan.equals(reserve)) {//отыскиваем есть ли в списке резерва названия деталей такие же как у объекта планового выпуска
+                    if (plan.getAmount() <= reserve.getAmount()) {//если есть и если количество планируемых деталей для выпуска меньше или равно чем резервных на складе
+                        purchase.setAmount(0);// присваиваем объекту закупок деталей 0 - т.е. закупки производить не нужно
+                        reserveList.get(i).setAmount(reserve.getAmount() - plan.getAmount());//из резервного объекта в списке отнимаем кол-во запланируемых деталей
+                    } else {//если резервных деталей меньше чем планируемых к выпуску
+                        purchase.setAmount(plan.getAmount() - reserve.getAmount());//присваиваем объекту планируемых закупаемых деталей величину равную количеству планируемых к выпуску деталей - количество деталей на складе
+                        purchase.setAmount((int) (purchase.getAmount() + (Math.ceil(purchase.getAmount() * 0.1))));//+10%
+                        reserveList.get(i).setAmount(0);//
                     }
-                    listItemsPurchase.reserveList.add(purchase);
+                    listItemsPurchase.reserveList.add(purchase);//добавляем созданный объект в список планируемых закупаемых деталей
                 } else {
 
                 }
             }
         }
-        for (int i = 0; i < listItemsPlan.reserveList.size(); i++) {
+        for (int i = 0; i < listItemsPlan.reserveList.size(); i++) {//добавляем те элементы, которых нет в резерве, но есть в списке выпускаемых деталей
             if (!this.reserveList.contains(listItemsPlan.reserveList.get(i))) {
                 Purchase purchase = new Purchase();
                 purchase.setQuarter(((Plan) listItemsPlan.reserveList.get(i)).getStringWithQuarter());
@@ -87,22 +88,22 @@ public class ListItems{  //объект для хранения объектов
             }
 
         }
-        return listItemsPurchase;
+        return listItemsPurchase;//возвращаем объект со списком всех закупаемых деталей
     }
 
 
 
-    public void writeInFile(String filename) {
+    public void writeInFile(String filename) {//метод для записи в файл всех закупаемых деталей
         try (FileWriter writer = new FileWriter(filename, false)) {
             for (Reserve reserve : this.reserveList)
-                if(reserve.getAmount()!=0)reserve.writeFile(writer);
+                if(reserve.getAmount()!=0)reserve.writeFile(writer);//записываем только те, количество деталей которых больше 0
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteEqualsItems() {//удаление одинаковых элементов
+    public void deleteEqualsItems() {//обнуление тех элементов списка, которые повторяются по кварталу и по наименованию детали
         for(int i=0;i<this.reserveList.size();i++){
             Purchase purchase1=(Purchase) reserveList.get(i);
             for (int j=0;j<this.reserveList.size();j++){
